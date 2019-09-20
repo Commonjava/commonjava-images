@@ -1,0 +1,8 @@
+# JMS, GHPRB
+#
+
+#https://plugins.jenkins.io/jms-messaging
+jms-messaging:1.1.9
+
+#https://plugins.jenkins.io/ghprb
+ghprb:1.42.0
