@@ -1,6 +1,7 @@
 # Uncomment this for community builds
-FROM centos:7
-ARG tarball_url=https://github.com/Commonjava/indy/releases/download/indy-parent-1.9.3/indy-launcher-1.9.3-skinny.tar.gz
+#FROM centos:7
+#ARG ver=1.9.3
+#ARG tarball_url=https://github.com/Commonjava/indy/releases/download/indy-parent-$ver/indy-launcher-$ver-skinny.tar.gz
 
 # Build from a RHEL 7.6 tag for now since the our Openshift nodes are on
 # RHEL 7.6 and can only provide RHEL 7.6 rpms to our image
