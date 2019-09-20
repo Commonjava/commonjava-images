@@ -1,9 +1,10 @@
 # Uncomment this for community builds
-#FROM centos:7
+FROM centos:7
+ARG tarball_url=https://github.com/Commonjava/indy/releases/download/indy-parent-1.9.3/indy-launcher-1.9.3-skinny.tar.gz
 
 # Build from a RHEL 7.6 tag for now since the our Openshift nodes are on
 # RHEL 7.6 and can only provide RHEL 7.6 rpms to our image
-FROM registry.access.redhat.com/rhel7:7.6-362
+#FROM registry.access.redhat.com/rhel7:7.6-362
 
 LABEL io.openshift.sti.scripts-url="image:///usr/local/sti" \
     io.openshift.s2i.scripts-url="image:///usr/local/sti" \

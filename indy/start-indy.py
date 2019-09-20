@@ -62,6 +62,9 @@ def runIn(cmd, workdir, fail_message='Error running command', fail=True):
 
 
 def copy_over(src, target):
+  if not os.path.exists(src):
+    return
+  
   if os.path.exists(target):
     print "rm -r %s %s" % (src, target)
     shutil.rmtree(target)
