@@ -47,6 +47,7 @@ ENTRYPOINT ["/usr/local/bin/dumb-init", "/usr/local/bin/start-indy.py"]
 
 RUN mkdir -p /etc/indy && mkdir -p /var/log/indy && mkdir -p /usr/share/indy
 RUN chmod -R 777 /etc/indy && chmod -R 777 /var/log/indy && chmod -R 777 /usr/share/indy
+RUN cp -rf /opt/indy/var/lib/indy/ui /usr/share/indy/ui
 
 ADD lowOverhead.jfc /usr/share/indy/flightrecorder.jfc
 
