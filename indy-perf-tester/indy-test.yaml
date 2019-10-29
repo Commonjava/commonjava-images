@@ -1,0 +1,13 @@
+promote-by-path: true
+source-base-directory: /home/jdcasey/code/stacks/indy
+
+builds:
+  weft:
+    git-branch: weft-1.12
+  partyline:
+    git-branch: partyline-1.16
+  galley:
+    git-branch: galley-0.17.2
+  indy:
+    git-branch: release
+

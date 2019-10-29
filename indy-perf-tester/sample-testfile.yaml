@@ -1,0 +1,8 @@
+promote-by-path: true
+source-base-directory: /sources
+
+builds:
+  my-test-project:
+    source-directory: my-test-project-workdir
+    git-branch: maint
+
