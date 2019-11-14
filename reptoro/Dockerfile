@@ -14,13 +14,8 @@ EXPOSE 8080 8778 9779
 
 USER root
 
-ADD start.sh /usr/local/bin/start.sh
-
-RUN chmod +x /usr/local/bin/* \
-	mkdir -p /deployment/resources \
+RUN mkdir -p /deployment/resources \
 	echo "Pulling jar from: $jar_url" \
 	curl -SsLo /deployment/app.jar $jar_url
 
 USER 1001
-
-ENTRYPOINT ["/usr/local/bin/dumb-init", "/usr/local/bin/start.sh"]

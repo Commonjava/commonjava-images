@@ -32,6 +32,8 @@ RUN yum -y update && \
     yum clean all && \
     rm -rf /var/cache/yum
 
+ADD start.sh /usr/local/bin/start.sh
+
 RUN chmod +x /usr/local/bin/*
 
 USER 1001
