@@ -1,4 +1,4 @@
-FROM fabric8/java-centos-openjdk8-jdk:1.5
+FROM quay.io/factory2/nos-java-base:latest
 
 #ARG tarball_url=https://some.host/some/path/to/reptoro.jar
 
@@ -12,7 +12,15 @@ ENV JAVA_OPTIONS -Dvertx.cacheDirBase=/tmp \
 
 EXPOSE 8080 8778 9779
 
-#COPY maven /deployments/
+USER root
 
-RUN curl -SsLo /deployments/reptoro.jar $tarball_url
+ADD start.sh /usr/local/bin/start.sh
 
+RUN chmod +x /usr/local/bin/* \
+	mkdir -p /deployment/resources \
+	echo "Pulling jar from: $jar_url" \
+	curl -SsLo /deployment/app.jar $jar_url
+
+USER 1001
+
+ENTRYPOINT ["/usr/local/bin/dumb-init", "/usr/local/bin/start.sh"]
