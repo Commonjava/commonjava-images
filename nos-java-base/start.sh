@@ -17,4 +17,9 @@ if [ $? != 0 ]; then
   JAVA=${JAVA_HOME}/bin/java
 fi
 
-exec $JAVA $JAVA_OPTS -jar /deployment/app.jar "$@"
+CP=""
+if [ -d /deployment/resources ]; then
+    CP="-cp /deployment/resources"
+fi
+
+exec $JAVA $JAVA_OPTS $CP -jar /deployment/app.jar "$@"
