@@ -14,8 +14,8 @@ EXPOSE 8080 8778 9779
 
 USER root
 
-RUN mkdir -p /deployment/resources \
-	echo "Pulling jar from: $jar_url" \
+RUN mkdir -p /deployment/resources && \
+	echo "Pulling jar from: $jar_url" && \
 	curl -SsLo /deployment/app.jar $jar_url
 
 USER 1001
