@@ -199,6 +199,7 @@ if os.path.isdir(INDY_DATA_PROMOTE):
 # copy_over("/usr/share/indy/promote", INDY_DATA_PROMOTE)
 # copy_over("/usr/share/indy/scripts", os.path.join(INDY_DATA, "scripts"))
 copy_missed("/opt/indy/etc/indy/promote", INDY_DATA_PROMOTE)
+copy_missed("/usr/share/indy/data/promote", INDY_DATA_PROMOTE)
 copy_over("/opt/indy/etc/indy/scripts", os.path.join(INDY_DATA, "scripts"))
 copy_over("/opt/indy/etc/indy/lifecycle", os.path.join(INDY_DATA, "lifecycle"))
 
