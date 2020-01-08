@@ -155,7 +155,7 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-RUN mkdir -p /var/lib/cassandra "$CASSANDRA_CONFIG" \
+RUN mkdir -p /var/lib/cassandra/logs "$CASSANDRA_CONFIG" \
 	&& chown -R cassandra:cassandra /var/log/cassandra /var/lib/cassandra "$CASSANDRA_CONFIG" \
 	&& chmod 777 /var/log/cassandra /var/lib/cassandra "$CASSANDRA_CONFIG"
 VOLUME /var/lib/cassandra
