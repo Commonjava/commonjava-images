@@ -19,7 +19,17 @@ RUN	mkdir -p /usr/share/indy && \
 
 RUN chmod +x /usr/local/bin/*
 
-ENTRYPOINT ["/usr/local/bin/dumb-init", "/usr/local/bin/start-indy.py"]
+ADD setup-user.sh /usr/local/bin/setup-user.sh
+ADD passwd.template /opt/passwd.template
+
+RUN wget -P /tmp http://mirror.centos.org/centos/7.7.1908/os/x86_64/RPM-GPG-KEY-CentOS-7 && \
+    rpm --import /tmp/RPM-GPG-KEY-CentOS-7 && \
+    yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
+    yum update -y --security && yum install -y nss_wrapper gettext && \
+    yum clean all && rm -rf /var/cache/yum
+
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
+CMD ["bash", "-c", "/usr/local/bin/setup-user.sh && /usr/local/bin/start-indy.py"]
 
 RUN mkdir -p /etc/indy && mkdir -p /var/log/indy && mkdir -p /usr/share/indy
 RUN chmod -R 777 /etc/indy && chmod -R 777 /var/log/indy && chmod -R 777 /usr/share/indy
@@ -40,6 +50,7 @@ RUN chgrp -R 0 /opt && \
     chgrp -R 0 /var/log/indy && \
     chmod -R g=u /var/log/indy && \
     chgrp -R 0 /usr/share/indy && \
-    chmod -R g=u /usr/share/indy
+    chmod -R g=u /usr/share/indy && \
+    useradd indy --uid 1001 --gid 0
 
 USER 1001

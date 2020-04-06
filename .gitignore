@@ -2,3 +2,4 @@ venv
 .venv
 *.egg-info
 *.pyc
+*~
