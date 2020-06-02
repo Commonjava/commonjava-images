@@ -22,7 +22,7 @@ RUN chmod +x /usr/local/bin/*
 ADD setup-user.sh /usr/local/bin/setup-user.sh
 ADD passwd.template /opt/passwd.template
 
-RUN wget -P /tmp http://mirror.centos.org/centos/7.7.1908/os/x86_64/RPM-GPG-KEY-CentOS-7 && \
+RUN wget -P /tmp http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-7 && \
     rpm --import /tmp/RPM-GPG-KEY-CentOS-7 && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum update -y --security && yum install -y nss_wrapper gettext && \
