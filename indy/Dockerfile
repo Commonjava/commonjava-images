@@ -29,7 +29,12 @@ RUN wget -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-
     yum clean all && rm -rf /var/cache/yum
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
-CMD ["bash", "-c", "/usr/local/bin/setup-user.sh && /usr/local/bin/start-indy.py"]
+CMD ["bash", "-c", "/usr/local/bin/start-indy.py"]
+
+
+# [jdcasey] This results in: **bash: /usr/local/bin/setup-user.sh: Permission denied**
+#CMD ["bash", "-c", "/usr/local/bin/setup-user.sh && /usr/local/bin/start-indy.py"]
+
 
 RUN mkdir -p /etc/indy && mkdir -p /var/log/indy && mkdir -p /usr/share/indy
 RUN chmod -R 777 /etc/indy && chmod -R 777 /var/log/indy && chmod -R 777 /usr/share/indy
