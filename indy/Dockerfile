@@ -17,10 +17,10 @@ RUN	mkdir -p /usr/share/indy && \
 	mkdir -p /opt/indy/var/lib/indy/data/promote && \
 	cp -rf /usr/share/indy/data/promote/rules /opt/indy/var/lib/indy/data/promote/rules
 
-RUN chmod +x /usr/local/bin/*
-
 ADD setup-user.sh /usr/local/bin/setup-user.sh
 ADD passwd.template /opt/passwd.template
+
+RUN chmod +x /usr/local/bin/*
 
 RUN wget -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7 && \
     rpm --import /tmp/RPM-GPG-KEY-CentOS-7 && \
@@ -29,11 +29,9 @@ RUN wget -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-
     yum clean all && rm -rf /var/cache/yum
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
-CMD ["bash", "-c", "/usr/local/bin/start-indy.py"]
 
-
-# [jdcasey] This results in: **bash: /usr/local/bin/setup-user.sh: Permission denied**
-#CMD ["bash", "-c", "/usr/local/bin/setup-user.sh && /usr/local/bin/start-indy.py"]
+#CMD ["bash", "-c", "/usr/local/bin/start-indy.py"]
+CMD ["bash", "-c", "/usr/local/bin/setup-user.sh && /usr/local/bin/start-indy.py"]
 
 
 RUN mkdir -p /etc/indy && mkdir -p /var/log/indy && mkdir -p /usr/share/indy
