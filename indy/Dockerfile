@@ -21,8 +21,14 @@ RUN chmod +x /usr/local/bin/*
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "/usr/local/bin/start-indy.py"]
 
-RUN mkdir -p /etc/indy && mkdir -p /var/log/indy && mkdir -p /usr/share/indy
+RUN mkdir -p /etc/indy && mkdir -p /var/log/indy && mkdir -p /usr/share/indy /opt/indy/var/log/indy
 RUN chmod -R 777 /etc/indy && chmod -R 777 /var/log/indy && chmod -R 777 /usr/share/indy
+RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
+    wget -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7 && \
+    rpm --import /tmp/RPM-GPG-KEY-CentOS-7 && \
+    yum-config-manager --add-repo http://mirror.centos.org/centos/7/os/x86_64/ && \
+    yum install -y java-11-openjdk-devel.x86_64 java-11-openjdk-headless.x86_64 && \
+    yum clean all
 RUN cp -rf /opt/indy/var/lib/indy/ui /usr/share/indy/ui
 
 ADD lowOverhead.jfc /usr/share/indy/flightrecorder.jfc
