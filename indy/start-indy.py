@@ -198,8 +198,8 @@ if os.path.isdir(INDY_DATA_PROMOTE):
 
 # copy_over("/usr/share/indy/promote", INDY_DATA_PROMOTE)
 # copy_over("/usr/share/indy/scripts", os.path.join(INDY_DATA, "scripts"))
-copy_missed("/opt/indy/etc/indy/promote", INDY_DATA_PROMOTE)
-copy_missed("/usr/share/indy/data/promote/rules", os.path.join(INDY_DATA_PROMOTE, "rules"))
+# copy_missed("/opt/indy/etc/indy/promote", INDY_DATA_PROMOTE)
+# copy_missed("/usr/share/indy/data/promote/rules", os.path.join(INDY_DATA_PROMOTE, "rules"))
 copy_over("/opt/indy/etc/indy/scripts", os.path.join(INDY_DATA, "scripts"))
 copy_over("/opt/indy/etc/indy/lifecycle", os.path.join(INDY_DATA, "lifecycle"))
 
