@@ -12,11 +12,11 @@ ADD setup-user.sh /etc/profile.d/setup-user.sh
 ADD passwd.template /opt/passwd.template
 
 ADD $tarball_url /tmp/indy-launcher.tar.gz
-RUN	tar -zxf /tmp/indy-launcher.tar.gz -C /opt
+RUN	tar -xf /tmp/indy-launcher.tar.gz -C /opt
 
 ADD $data_tarball_url /tmp/indy-launcher-data.tar.gz
 RUN	mkdir -p /usr/share/indy /home/indy && \
-	tar -zxf /tmp/indy-launcher-data.tar.gz -C /usr/share/indy
+	tar -xf /tmp/indy-launcher-data.tar.gz -C /usr/share/indy
 	# mkdir -p /opt/indy/var/lib/indy/data/promote && \
 	# cp -rf /usr/share/indy/data/promote/rules /opt/indy/var/lib/indy/data/promote/rules
 
