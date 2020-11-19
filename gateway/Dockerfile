@@ -2,10 +2,7 @@ FROM quay.io/factory2/nos-java-base:latest
 
 USER root
 
-RUN yum -y update && \
-    yum -y install java-11-openjdk-devel && \
-    yum clean all && \
-    rm -rf /var/cache/yum
+RUN yum -y install java-11-openjdk-devel
 
 RUN mkdir -p /deployment && \
   echo "Pulling jar from: $tarball_url" && \
