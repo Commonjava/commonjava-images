@@ -5,6 +5,7 @@ USER root
 RUN yum -y install java-11-openjdk-devel
 
 RUN mkdir -p /deployment/log && \
+  chmod -R 777 /deployment/log && \
   echo "Pulling jar from: $tarball_url" && \
   wget $tarball_url -O /deployment/gateway-runner.jar
 
