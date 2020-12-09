@@ -1,5 +1,5 @@
 # Uncomment this for community builds
-FROM fedora-minimal
+FROM quay.io/fedora/fedora-minimal:33
 
 # Build from a RHEL 7.6 tag for now since the our Openshift nodes are on
 # RHEL 7.6 and can only provide RHEL 7.6 rpms to our image
