@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# migrate process
+java -jar /deployment/pathmap-migrator.jar \ 
+  migrate -b /opt/indy/var/lib/indy/storage/ \ 
+  -w /deployment/work/ -H cassandra-cluster \ 
+  -P 9042 -k indystorage-stable-next \
+  -u cassandra -p cassandra -t 8 \ 
+  > /deployment/work/migrate_status.log 2>&1 &
