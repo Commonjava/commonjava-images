@@ -205,7 +205,7 @@ copy_over("/opt/indy/etc/indy/lifecycle", os.path.join(INDY_DATA, "lifecycle"))
 
 # copy_missed(BACKUP_PROMOTE, INDY_DATA_PROMOTE)
 
-cmd_parts = ["/bin/bash", "-l", os.path.join(INDY_DIR, 'bin', 'indy.sh')]
+cmd_parts = ["/bin/bash", os.path.join(INDY_DIR, 'bin', 'indy.sh')]
 cmd_parts += shlex.split(opts)
 
 print "Command parts: %s" % cmd_parts
