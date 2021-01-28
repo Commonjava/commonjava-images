@@ -14,7 +14,7 @@ RUN chmod +x /usr/local/bin/*
 
 RUN yum -y install java-11-openjdk-devel
 
-RUN mkdir -p /opt/indy-repository-service/log && \
+RUN mkdir -p /opt/indy-repository-service/log /home/indy && \
   chmod -R 777 /opt/indy-repository-service && \
   chmod -R 777 /opt/indy-repository-service/log && \
   echo "Pulling jar from: $tarball_url" && \
