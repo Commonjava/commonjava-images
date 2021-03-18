@@ -29,7 +29,8 @@ CMD ["bash", "-c", "source /usr/local/bin/setup-user.sh && /usr/local/bin/start-
 
 RUN mkdir -p /etc/indy && mkdir -p /var/log/indy && mkdir -p /usr/share/indy
 RUN chmod -R 777 /etc/indy && chmod -R 777 /var/log/indy && chmod -R 777 /usr/share/indy
-RUN cp -rf /opt/indy/var/lib/indy/ui /usr/share/indy/ui
+RUN cp -rf /opt/indy/var/lib/indy/ui /usr/share/indy/ui \
+    cp /opt/indy/lib/thirdparty/byteman-* /opt/indy/lib/thirdparty/byteman.jar
 RUN wget -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7 && \
     rpm --import /tmp/RPM-GPG-KEY-CentOS-7 && \
     yum-config-manager --add-repo http://mirror.centos.org/centos/7/os/x86_64/ && \
@@ -39,6 +40,7 @@ RUN wget -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-
     yum clean all && rm -rf /var/cache/yum /tmp/yum.log /tmp/RPM-GPG-KEY-CentOS-7
 
 ADD lowOverhead.jfc /usr/share/indy/flightrecorder.jfc
+ADD SetStatement300SecondTimeout.btm /usr/share/indy/
 
 # NCL-4814: set umask to 002 so that group permission is 'rwx'
 # It works because in start-indy.py we invoke indy.sh with bash -l (login shell)
