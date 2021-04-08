@@ -1,0 +1,25 @@
+# Rules to set a timeout on a Statement reference
+
+RULE Timeout set during Connection.createStatement 
+INTERFACE java.sql.Connection
+METHOD createStatement
+AT RETURN
+IF TRUE
+DO System.out.println("BYTEMAN:set 300s timeout during createStatement");$!.setQueryTimeout(300)
+ENDRULE
+
+RULE Timeout set during Connection.prepareCall
+INTERFACE java.sql.Connection
+METHOD prepareCall
+AT RETURN
+IF TRUE
+DO System.out.println("BYTEMAN:set 300s timeout during prepareCall");$!.setQueryTimeout(300)
+ENDRULE
+
+RULE Timeout set during Connection.prepareStatement
+INTERFACE java.sql.Connection
+METHOD prepareStatement
+AT RETURN
+IF TRUE
+DO System.out.println("BYTEMAN:set 300s timeout during prepareStatement");$!.setQueryTimeout(300)
+ENDRULE
