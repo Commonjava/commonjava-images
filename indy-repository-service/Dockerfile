@@ -4,10 +4,6 @@ EXPOSE 8080
 
 USER root
 
-ADD setup-user.sh /usr/local/bin/setup-user.sh
-ADD setup-user.sh /etc/profile.d/setup-user.sh
-ADD passwd.template /opt/passwd.template
-
 ADD start-service.sh /usr/local/bin/start-service.sh
 
 RUN chmod +x /usr/local/bin/*
@@ -29,8 +25,7 @@ RUN chgrp -R 0 /opt && \
     chmod -R g=u /opt/indy-repository-service/log && \
     chgrp -R 0 /home/indy && \
     chmod -R g=u /home/indy && \
-    chown -R 1001:0 /home/indy && \
-    chmod 644 /etc/profile.d/setup-user.sh
+    chown -R 1001:0 /home/indy 
 
 USER 1001
 
@@ -39,4 +34,4 @@ ENV USER=indy
 ENV HOME=/home/indy
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
-CMD ["bash", "-c", "source /usr/local/bin/setup-user.sh && /usr/local/bin/start-service.sh"]
+CMD ["bash", "-c", "/usr/local/bin/start-service.sh"]
