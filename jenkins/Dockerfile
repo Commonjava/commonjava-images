@@ -1,6 +1,6 @@
 # Uncomment this for community builds
-#FROM quay.io/openshift/origin-jenkins
-FROM openshift/jenkins-2-centos7
+FROM quay.io/openshift/origin-jenkins
+# FROM openshift/jenkins-2-centos7
 
 LABEL Name="nos-jenkins" \
     Version="1" \
