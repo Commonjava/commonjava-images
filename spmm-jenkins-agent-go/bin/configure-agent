@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# extract the different element of an url into a JSON structure
+parse_url() {
+  # extract the protocol
+  proto="$(echo $1 | cut -f1 -d: )"
+  if [[ ! -z $proto ]] ; then
+    # remove the protocol
+    url="$(echo ${1/"$proto://"/})"
+    # extract the user (if any)
+    login="$(echo $url | grep @ | cut -d@ -f1)"
+    username="$(echo $login | cut -d: -f1)"
+    password="$(echo $login | cut -d: -f2)"
+    # extract the host
+    host_port="$(echo ${url/$login@/} | cut -d/ -f1) "
+    host="$(echo $host_port | cut -f1 -d:) "
+
+    # by request - try to extract the port
+    port="$(echo $host_port | sed -e 's,^.*:,:,g' -e 's,.*:\([0-9]*\).*,\1,g' -e 's,[^0-9],,g')"
+    # extract the uri (if any)
+    resource="/$(echo $url | grep / | cut -d/ -f2-)"
+  fi
+  echo -n "{ \"uri\": \"$1\" , \"url\": \"$url\" , \"proto\": \"$proto\" , \"login\": \"$login\" ,"
+  echo  " \"username\": \"$username\" , \"password\": \"$password\" , \"host\": \"$host\" , \"port\": \"$port\" }"
+}
+
+# converts .google.fr,.google.com into *.google.fr|*.google.com
+convert_no_proxy() {
+  local urls
+  urls=$1
+  echo $urls | tr , \| | sed 's/\./\*\./' | sed 's/|\./,\*\./'
+}
+
+if [ -n "$http_proxy" ]; then
+ json=$( parse_url $http_proxy )
+fi
+
+
+if [ -n "$https_proxy" ]; then
+ json=$( parse_url $https_proxy )
+fi
+
+CONTAINER_MEMORY_IN_BYTES=$(cat /sys/fs/cgroup/memory/memory.limit_in_bytes)
+CONTAINER_MEMORY_IN_MB=$((CONTAINER_MEMORY_IN_BYTES/2**20))
+
