@@ -43,10 +43,10 @@ RUN microdnf install zip curl ca-certificates ${JAVA_PACKAGE} \
 # Configure the JAVA_OPTIONS, you can add -XshowSettings:vm to also display the heap size.
 ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 # We make four distinct layers so if there are application changes the library layers can be re-used
-ADD ${build_url}archive/target/quarkus-app/lib.zip /deployments/lib/
-ADD ${build_url}archive/target/quarkus-app/quarkus-run.jar /deployments/
-ADD ${build_url}archive/target/quarkus-app/app/${app_jar_name} /deployments/app/
-ADD ${build_url}archive/target/quarkus-app/quarkus.zip /deployments/quarkus/
+ADD ${build_url}artifact/target/quarkus-app/lib.zip /deployments/lib/
+ADD ${build_url}artifact/target/quarkus-app/quarkus-run.jar /deployments/
+ADD ${app_jar_name} /deployments/app/
+ADD ${build_url}artifact/target/quarkus-app/quarkus.zip /deployments/quarkus/
 RUN unzip /deployments/lib/lib.zip -d /deployments/lib/ && \
     unzip /deployments/quarkus/quarkus.zip -d /deployments/quarkus/ && \
     chown 1001 -R /deployments/
