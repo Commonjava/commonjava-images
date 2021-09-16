@@ -66,7 +66,7 @@ def copy_over(src, target):
     return
   
   if os.path.exists(target):
-    print "rm -r %s %s" % (src, target)
+    print "rm -r %s" % target
     shutil.rmtree(target)
 
   print "cp -r %s %s" % (src, target)
