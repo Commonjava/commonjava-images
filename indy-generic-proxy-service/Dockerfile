@@ -9,8 +9,8 @@ RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
     yum-config-manager --add-repo http://mirror.centos.org/centos/7/os/x86_64/ && \
     yum -y install java-11-openjdk-devel.x86_64
 
-RUN mkdir -p /deployment/log && \
-  chmod -R 777 /deployment/log && \
+RUN mkdir -p /deployment/log /deployment/config && \
+  chmod -R 777 /deployment/log /deployment/config && \
   echo "Pulling jar from: $tarball_url" && \
   wget $tarball_url -O /deployment/indy-generic-proxy-service-runner.jar
 
