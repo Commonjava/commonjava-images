@@ -8,7 +8,11 @@ ADD start-service.sh /usr/local/bin/start-service.sh
 
 RUN chmod +x /usr/local/bin/*
 
-RUN yum -y install java-11-openjdk-devel
+RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
+    wget -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7 && \
+    rpm --import /tmp/RPM-GPG-KEY-CentOS-7 && \
+    yum-config-manager --add-repo http://mirror.centos.org/centos/7/os/x86_64/ && \
+    yum install -y java-11-openjdk-devel.x86_64 gettext unzip
 
 RUN mkdir -p /opt/indy-repository-service/log /home/indy && \
   chmod -R 777 /opt/indy-repository-service && \
