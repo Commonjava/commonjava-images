@@ -1,0 +1,41 @@
+FROM quay.io/factory2/nos-java-base:latest
+
+EXPOSE 8080
+
+USER root
+
+ADD start-service.sh /usr/local/bin/start-service.sh
+
+RUN chmod +x /usr/local/bin/*
+
+RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
+    wget -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7 && \
+    rpm --import /tmp/RPM-GPG-KEY-CentOS-7 && \
+    yum-config-manager --add-repo http://mirror.centos.org/centos/7/os/x86_64/ && \
+    yum install -y java-11-openjdk-devel.x86_64 gettext unzip
+
+RUN mkdir -p /opt/indy-promote-service/log /home/indy && \
+  chmod -R 777 /opt/indy-promote-service && \
+  chmod -R 777 /opt/indy-promote-service/log && \
+  echo "Pulling jar from: $tarball_url" && \
+  wget $tarball_url -O /opt/indy-promote-service/indy-promote-service-runner.jar
+
+# Run as non-root user
+RUN chgrp -R 0 /opt && \
+    chmod -R g=u /opt && \
+    chgrp -R 0 /opt/indy-promote-service && \
+    chmod -R g=u /opt/indy-promote-service && \
+    chgrp -R 0 /opt/indy-promote-service/log && \
+    chmod -R g=u /opt/indy-promote-service/log && \
+    chgrp -R 0 /home/indy && \
+    chmod -R g=u /home/indy && \
+    chown -R 1001:0 /home/indy
+
+USER 1001
+
+ENV LOGNAME=indy
+ENV USER=indy
+ENV HOME=/home/indy
+
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
+CMD ["bash", "-c", "/usr/local/bin/start-service.sh"]
