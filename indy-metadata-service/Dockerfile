@@ -17,29 +17,14 @@ RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
     yum-config-manager --add-repo http://mirror.centos.org/centos/7/os/x86_64/ && \
     yum -y install java-11-openjdk-devel.x86_64
 
-RUN mkdir -p /opt/indy-metadata-service/log /home/indy && \
-  chmod -R 777 /opt/indy-metadata-service && \
-  chmod -R 777 /opt/indy-metadata-service/log && \
+RUN mkdir -p /deployment/log /deployment/config && \
+  chmod -R 777 /deployment/log /deployment/config && \
   echo "Pulling jar from: $tarball_url" && \
-  wget $tarball_url -O /opt/indy-metadata-service/indy-metadata-service-runner.jar
+  wget $tarball_url -O /deployment/indy-metadata-service-runner.jar
 
-# Run as non-root user
-RUN chgrp -R 0 /opt && \
-    chmod -R g=u /opt && \
-    chgrp -R 0 /opt/indy-metadata-service && \
-    chmod -R g=u /opt/indy-metadata-service && \
-    chgrp -R 0 /opt/indy-metadata-service/log && \
-    chmod -R g=u /opt/indy-metadata-service/log && \
-    chgrp -R 0 /home/indy && \
-    chmod -R g=u /home/indy && \
-    chown -R 1001:0 /home/indy && \
-    chmod 644 /etc/profile.d/setup-user.sh
+ADD start-service.sh /deployment/start-service.sh
+RUN chmod +x /deployment/*
 
 USER 1001
 
-ENV LOGNAME=indy
-ENV USER=indy
-ENV HOME=/home/indy
-
-ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
-CMD ["bash", "-c", "source /usr/local/bin/setup-user.sh && /usr/local/bin/start-service.sh"]
+ENTRYPOINT ["/usr/local/bin/dumb-init", "/deployment/start-service.sh"]
