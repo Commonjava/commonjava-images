@@ -14,7 +14,7 @@ RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
     yum-config-manager --add-repo http://mirror.centos.org/centos/7/os/x86_64/ && \
     yum install -y java-11-openjdk-devel.x86_64 gettext unzip
 
-RUN mkdir -p /opt/indy-repository-service/log /home/indy && \
+RUN mkdir -p /opt/indy-repository-service/log && \
   chmod -R 777 /opt/indy-repository-service && \
   chmod -R 777 /opt/indy-repository-service/log && \
   echo "Pulling jar from: $tarball_url" && \
@@ -26,16 +26,9 @@ RUN chgrp -R 0 /opt && \
     chgrp -R 0 /opt/indy-repository-service && \
     chmod -R g=u /opt/indy-repository-service && \
     chgrp -R 0 /opt/indy-repository-service/log && \
-    chmod -R g=u /opt/indy-repository-service/log && \
-    chgrp -R 0 /home/indy && \
-    chmod -R g=u /home/indy && \
-    chown -R 1001:0 /home/indy 
+    chmod -R g=u /opt/indy-repository-service/log 
 
 USER 1001
-
-ENV LOGNAME=indy
-ENV USER=indy
-ENV HOME=/home/indy
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["bash", "-c", "/usr/local/bin/start-service.sh"]
