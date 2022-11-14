@@ -8,6 +8,12 @@ ENV BASH_ENV=/usr/local/bin/scl_enable \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 
 
+# Install RH Certificates
+ADD Eng_Ops_CA.crt /etc/pki/ca-trust/source/anchors/Eng_Ops_CA.crt
+ADD Red_Hat_IS_CA.crt /etc/pki/ca-trust/source/anchors/Red_Hat_IS_CA.crt
+ADD RH-IT-Root-CA.crt /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
+RUN update-ca-trust extract
+
 # Install needed packages
 COPY repos/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
 COPY repos/epel.repo /etc/yum.repos.d/epel.repo
