@@ -1,0 +1,20 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: jenkins-agent-maven-38-rhel8
+  name: jenkins-agent-maven-38-rhel8
+  namespace: nos-automation
+spec:
+  source:
+    git:
+      uri: https://github.com/Commonjava/commonjava-images.git
+    type: Git
+  strategy:
+    dockerStrategy:
+      dockerfilePath: jenkins/openshift4/jenkins-agent-maven-38-rhel8/Dockerfile
+    type: Docker
+  output:
+    to:
+      kind: ImageStreamTag
+      name: jenkins-agent-maven-38-rhel8:latest
