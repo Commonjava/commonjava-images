@@ -16,9 +16,10 @@ RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
 
 RUN mkdir -p /opt/indy-sidecar/log && \
   chmod -R 777 /opt/indy-sidecar && \
-  chmod -R 777 /opt/indy-sidecar/log && \
-  echo "Pulling jar from: $tarball_url" && \
-  wget $tarball_url -O /opt/indy-sidecar/indy-sidecar-runner.jar
+  chmod -R 777 /opt/indy-sidecar/log
+
+RUN "Pulling jar from: $tarball_url"
+ADD $tarball_url /opt/indy-sidecar/indy-sidecar-runner.jar
 
 RUN chgrp -R 0 /opt && \
     chmod -R g=u /opt && \

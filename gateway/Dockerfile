@@ -10,9 +10,10 @@ RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
     yum -y install java-11-openjdk-devel.x86_64
 
 RUN mkdir -p /deployment/log && \
-  chmod -R 777 /deployment/log && \
-  echo "Pulling jar from: $tarball_url" && \
-  wget $tarball_url -O /deployment/gateway-runner.jar
+  chmod -R 777 /deployment/log
+
+RUN echo "Pulling jar from: $tarball_url"
+ADD $tarball_url /deployment/gateway-runner.jar
 
 ADD start-gateway.sh /deployment/start-gateway.sh
 RUN chmod +x /deployment/*

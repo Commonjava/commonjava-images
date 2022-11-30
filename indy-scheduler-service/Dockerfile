@@ -12,9 +12,10 @@ RUN yum -y install java-11-openjdk-devel
 
 RUN mkdir -p /opt/indy-scheduler-service/log /home/indy && \
   chmod -R 777 /opt/indy-scheduler-service && \
-  chmod -R 777 /opt/indy-scheduler-service/log && \
-  echo "Pulling jar from: $tarball_url" && \
-  wget $tarball_url -O /opt/indy-scheduler-service/indy-scheduler-service-runner.jar
+  chmod -R 777 /opt/indy-scheduler-service/log
+
+RUN echo "Pulling jar from: $tarball_url"
+ADD $tarball_url /opt/indy-scheduler-service/indy-scheduler-service-runner.jar
 
 # Run as non-root user
 RUN chgrp -R 0 /opt && \
