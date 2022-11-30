@@ -16,9 +16,10 @@ RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
 
 RUN mkdir -p /opt/indy-promote-service/log /home/indy && \
   chmod -R 777 /opt/indy-promote-service && \
-  chmod -R 777 /opt/indy-promote-service/log && \
-  echo "Pulling jar from: $tarball_url" && \
-  wget $tarball_url -O /opt/indy-promote-service/indy-promote-service-runner.jar
+  chmod -R 777 /opt/indy-promote-service/log
+
+RUN echo "Pulling jar from: $tarball_url"
+ADD $tarball_url /opt/indy-promote-service/indy-promote-service-runner.jar
 
 # Run as non-root user
 RUN chgrp -R 0 /opt && \

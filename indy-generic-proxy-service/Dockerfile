@@ -10,9 +10,10 @@ RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
     yum -y install java-11-openjdk-devel.x86_64
 
 RUN mkdir -p /deployment/log /deployment/config && \
-  chmod -R 777 /deployment/log /deployment/config && \
-  echo "Pulling jar from: $tarball_url" && \
-  wget $tarball_url -O /deployment/indy-generic-proxy-service-runner.jar
+  chmod -R 777 /deployment/log /deployment/config
+  
+RUN echo "Pulling jar from: $tarball_url"
+ADD $tarball_url /deployment/indy-generic-proxy-service-runner.jar
 
 ADD start-service.sh /deployment/start-service.sh
 RUN chmod +x /deployment/*

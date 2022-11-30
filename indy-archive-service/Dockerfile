@@ -12,9 +12,10 @@ RUN yum -y install java-11-openjdk-devel
 
 RUN mkdir -p /opt/indy-archive-service/log /home/indy && \
   chmod -R 777 /opt/indy-archive-service && \
-  chmod -R 777 /opt/indy-archive-service/log && \
-  echo "Pulling jar from: $tarball_url" && \
-  wget $tarball_url -O /opt/indy-archive-service/indy-archive-service-runner.jar
+  chmod -R 777 /opt/indy-archive-service/log
+
+RUN echo "Pulling jar from: $tarball_url"
+ADD $tarball_url /opt/indy-archive-service/indy-archive-service-runner.jar
 
 RUN chgrp -R 0 /opt && \
     chmod -R g=u /opt && \

@@ -16,9 +16,10 @@ RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
 
 RUN mkdir -p /opt/pathmap-storage-service/log /home/indy && \
   chmod -R 777 /opt/pathmap-storage-service && \
-  chmod -R 777 /opt/pathmap-storage-service/log && \
-  echo "Pulling jar from: $tarball_url" && \
-  wget $tarball_url -O /opt/pathmap-storage-service/pathmap-storage-service-runner.jar
+  chmod -R 777 /opt/pathmap-storage-service/log
+
+RUN echo "Pulling jar from: $tarball_url"
+ADD $tarball_url /opt/pathmap-storage-service/pathmap-storage-service-runner.jar
 
 # Run as non-root user
 RUN chgrp -R 0 /opt && \

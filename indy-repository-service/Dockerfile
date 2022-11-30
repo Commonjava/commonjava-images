@@ -16,9 +16,10 @@ RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
 
 RUN mkdir -p /opt/indy-repository-service/log && \
   chmod -R 777 /opt/indy-repository-service && \
-  chmod -R 777 /opt/indy-repository-service/log && \
-  echo "Pulling jar from: $tarball_url" && \
-  wget $tarball_url -O /opt/indy-repository-service/indy-repository-service-runner.jar
+  chmod -R 777 /opt/indy-repository-service/log
+
+RUN echo "Pulling jar from: $tarball_url"
+ADD $tarball_url /opt/indy-repository-service/indy-repository-service-runner.jar
 
 # Run as non-root user
 RUN chgrp -R 0 /opt && \
