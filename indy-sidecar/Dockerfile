@@ -18,7 +18,7 @@ RUN mkdir -p /opt/indy-sidecar/log && \
   chmod -R 777 /opt/indy-sidecar && \
   chmod -R 777 /opt/indy-sidecar/log
 
-RUN "Pulling jar from: $tarball_url"
+RUN echo "Pulling jar from: $tarball_url"
 ADD $tarball_url /opt/indy-sidecar/indy-sidecar-runner.jar
 
 RUN chgrp -R 0 /opt && \
