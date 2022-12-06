@@ -23,6 +23,7 @@ RUN mkdir -p /deployment/log /deployment/config && \
 
 RUN echo "Pulling jar from: $tarball_url"
 ADD $tarball_url /deployment/indy-metadata-service-runner.jar
+RUN chmod +r /deployment/indy-metadata-service-runner.jar
 
 ADD start-service.sh /deployment/start-service.sh
 RUN chmod +x /deployment/*

@@ -16,6 +16,7 @@ RUN mkdir -p /opt/indy-archive-service/log /home/indy && \
 
 RUN echo "Pulling jar from: $tarball_url"
 ADD $tarball_url /opt/indy-archive-service/indy-archive-service-runner.jar
+RUN chmod +r /opt/indy-archive-service/indy-archive-service-runner.jar
 
 RUN chgrp -R 0 /opt && \
     chmod -R g=u /opt && \

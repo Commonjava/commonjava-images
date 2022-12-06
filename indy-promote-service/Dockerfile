@@ -20,6 +20,7 @@ RUN mkdir -p /opt/indy-promote-service/log /home/indy && \
 
 RUN echo "Pulling jar from: $tarball_url"
 ADD $tarball_url /opt/indy-promote-service/indy-promote-service-runner.jar
+RUN chmod +r /opt/indy-promote-service/indy-promote-service-runner.jar
 
 # Run as non-root user
 RUN chgrp -R 0 /opt && \
