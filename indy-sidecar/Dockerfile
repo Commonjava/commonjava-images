@@ -20,6 +20,7 @@ RUN mkdir -p /opt/indy-sidecar/log && \
 
 RUN echo "Pulling jar from: $tarball_url"
 ADD $tarball_url /opt/indy-sidecar/indy-sidecar-runner.jar
+RUN chmod +r /opt/indy-sidecar/indy-sidecar-runner.jar
 
 RUN chgrp -R 0 /opt && \
     chmod -R g=u /opt && \

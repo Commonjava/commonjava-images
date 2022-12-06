@@ -20,6 +20,7 @@ RUN mkdir -p /opt/pathmap-storage-service/log /home/indy && \
 
 RUN echo "Pulling jar from: $tarball_url"
 ADD $tarball_url /opt/pathmap-storage-service/pathmap-storage-service-runner.jar
+RUN chmod +r /opt/pathmap-storage-service/pathmap-storage-service-runner.jar
 
 # Run as non-root user
 RUN chgrp -R 0 /opt && \

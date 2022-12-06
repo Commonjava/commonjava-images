@@ -14,6 +14,7 @@ RUN mkdir -p /deployment/log && \
 
 RUN echo "Pulling jar from: $tarball_url"
 ADD $tarball_url /deployment/gateway-runner.jar
+RUN chmod +r /deployment/gateway-runner.jar
 
 ADD start-gateway.sh /deployment/start-gateway.sh
 RUN chmod +x /deployment/*

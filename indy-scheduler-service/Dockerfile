@@ -16,6 +16,7 @@ RUN mkdir -p /opt/indy-scheduler-service/log /home/indy && \
 
 RUN echo "Pulling jar from: $tarball_url"
 ADD $tarball_url /opt/indy-scheduler-service/indy-scheduler-service-runner.jar
+RUN chmod +r /opt/indy-scheduler-service/indy-scheduler-service-runner.jar
 
 # Run as non-root user
 RUN chgrp -R 0 /opt && \

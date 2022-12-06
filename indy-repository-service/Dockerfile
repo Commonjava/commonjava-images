@@ -14,6 +14,7 @@ RUN mkdir -p /opt/indy-repository-service/log && \
 
 RUN echo "Pulling jar from: $tarball_url"
 ADD $tarball_url /opt/indy-repository-service/indy-repository-service-runner.jar
+RUN chmod +r /opt/indy-repository-service/indy-repository-service-runner.jar
 
 # Run as non-root user
 RUN chgrp -R 0 /opt && \
