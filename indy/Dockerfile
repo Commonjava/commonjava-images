@@ -1,3 +1,18 @@
+FROM quay.io/kaine/spmm-pipeline-base:latest AS builder
+
+RUN mkdir indy && \
+    cd indy && \
+    git init && \
+    git remote add origin $GIT_URL && \
+    git fetch --depth 1 origin $GIT_REVISION && \
+    git checkout FETCH_HEAD
+
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk
+
+RUN cd indy && \
+    mvn -B -V -gt toolchains.xml clean verify -DskipNpmConfig=false
+
+
 FROM quay.io/factory2/nos-java-base:latest
 
 ENV INDY_ETC_DIR /usr/share/indy/etc
@@ -11,10 +26,10 @@ ADD setup-user.sh /usr/local/bin/setup-user.sh
 ADD setup-user.sh /etc/profile.d/setup-user.sh
 ADD passwd.template /opt/passwd.template
 
-ADD $tarball_url /tmp/indy-launcher.tar.gz
+COPY --from=builder /indy/deployments/launcher/target/*-skinny.tar.gz /tmp/indy-launcher.tar.gz
 RUN	tar -xf /tmp/indy-launcher.tar.gz -C /opt
 
-ADD $data_tarball_url /tmp/indy-launcher-data.tar.gz
+COPY --from=builder /indy/deployments/launcher/target/*-data.tar.gz /tmp/indy-launcher-data.tar.gz
 RUN	mkdir -p /usr/share/indy /home/indy && \
 	tar -xf /tmp/indy-launcher-data.tar.gz -C /usr/share/indy
 	# mkdir -p /opt/indy/var/lib/indy/data/promote && \
