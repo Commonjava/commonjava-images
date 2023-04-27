@@ -1,4 +1,4 @@
-FROM quay.io/kaine/spmm-pipeline-base:latest AS builder
+FROM quay.io/factory2/spmm-pipeline-base:latest AS builder
 
 RUN mkdir repo && \
     cd repo && \
@@ -8,9 +8,7 @@ RUN mkdir repo && \
     git checkout FETCH_HEAD
 
 RUN cd repo && \
-    mvn -N io.takari:maven:wrapper && \
-    chmod +x ./mvnw && \
-    ./mvnw package -Dquarkus.package.type=uber-jar
+    mvn package -Dquarkus.package.type=uber-jar
 
 
 FROM quay.io/factory2/nos-java-base:jdk11

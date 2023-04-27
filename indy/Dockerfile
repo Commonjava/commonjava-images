@@ -1,4 +1,4 @@
-FROM quay.io/kaine/spmm-pipeline-base:latest AS builder
+FROM quay.io/factory2/spmm-pipeline-base:latest AS builder
 
 RUN mkdir indy && \
     cd indy && \
