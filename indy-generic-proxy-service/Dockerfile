@@ -1,18 +1,3 @@
-FROM quay.io/kaine/spmm-pipeline-base:latest AS builder
-
-RUN mkdir repo && \
-    cd repo && \
-    git init && \
-    git remote add origin $GIT_URL && \
-    git fetch --depth 1 origin $GIT_REVISION && \
-    git checkout FETCH_HEAD
-
-RUN cd repo && \
-    mvn -N io.takari:maven:wrapper && \
-    chmod +x ./mvnw && \
-    ./mvnw package -Dquarkus.package.type=uber-jar
-
-
 FROM quay.io/factory2/nos-java-base:latest
 
 USER root
@@ -28,7 +13,7 @@ RUN mkdir -p /deployment/log /deployment/config && \
   chmod -R 777 /deployment/log /deployment/config
   
 RUN echo "Pulling jar from: $tarball_url"
-COPY --from=builder /repo/target/*-runner.jar /deployment/indy-generic-proxy-service-runner.jar
+ADD $tarball_url /deployment/indy-generic-proxy-service-runner.jar
 RUN chmod +r /deployment/indy-generic-proxy-service-runner.jar
 
 ADD start-service.sh /deployment/start-service.sh
