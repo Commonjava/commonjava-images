@@ -30,14 +30,9 @@ CMD ["bash", "-c", "source /usr/local/bin/setup-user.sh && /usr/local/bin/start-
 RUN mkdir -p /etc/indy && mkdir -p /var/log/indy && mkdir -p /usr/share/indy /opt/indy/var/log/indy
 RUN chmod -R 777 /etc/indy && chmod -R 777 /var/log/indy && chmod -R 777 /usr/share/indy
 RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
-    wget -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7 && \
-    rpm --import /tmp/RPM-GPG-KEY-CentOS-7 && \
-    yum-config-manager --add-repo http://mirror.centos.org/centos/7/os/x86_64/ && \
     yum install -y java-11-openjdk-devel.x86_64 gettext unzip
 RUN cp -rf /opt/indy/var/lib/indy/ui /usr/share/indy/ui
-RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-    yum install -y nss_wrapper && \
-    yum clean all && rm -rf /var/cache/yum /tmp/yum.log /tmp/RPM-GPG-KEY-CentOS-7 && \
+RUN yum clean all && rm -rf /var/cache/yum /tmp/yum.log /tmp/RPM-GPG-KEY-CentOS-7 && \
     wget --quiet -O /tmp/byteman.zip https://downloads.jboss.org/byteman/4.0.14/byteman-download-4.0.14-bin.zip && \
     unzip -d /tmp/ /tmp/byteman.zip **/byteman.jar && \
     mv /tmp/byteman-download-4.0.14/lib/byteman.jar /opt/indy/lib/thirdparty && \
