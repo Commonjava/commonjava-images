@@ -62,9 +62,8 @@ ENV BASH_ENV=/usr/local/bin/scl_enable \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 
 
-ADD cacerts/Eng_Ops_CA.crt /etc/pki/ca-trust/source/anchors/Eng_Ops_CA.crt
-ADD cacerts/Red_Hat_IS_CA.crt /etc/pki/ca-trust/source/anchors/Red_Hat_IS_CA.crt
 ADD cacerts/RH-IT-Root-CA.crt /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
+ADD cacerts/2022-IT-Root-CA.pem /etc/pki/ca-trust/source/anchors/2022-IT-Root-CA.pem
 RUN update-ca-trust extract
 
 RUN mkdir -p $HOME/gopath && \
