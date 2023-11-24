@@ -6,15 +6,15 @@ EXPOSE 8080 8081 8000
 
 USER root
 
-ADD start-indy.py /usr/local/bin/start-indy.py
-ADD setup-user.sh /usr/local/bin/setup-user.sh
-ADD setup-user.sh /etc/profile.d/setup-user.sh
-ADD passwd.template /opt/passwd.template
+ADD start-indy.py /usr/local/bin/
+ADD setup-user.sh /usr/local/bin/
+ADD setup-user.sh /etc/profile.d/
+ADD passwd.template /opt/
 
-ADD indy-launcher.tar.gz /tmp/indy-launcher.tar.gz
+ADD indy-launcher.tar.gz /tmp/
 RUN	tar -xf /tmp/indy-launcher.tar.gz -C /opt
 
-ADD indy-launcher-data.tar.gz /tmp/indy-launcher-data.tar.gz
+ADD indy-launcher-data.tar.gz /tmp/
 RUN	mkdir -p /usr/share/indy /home/indy && \
 	tar -xf /tmp/indy-launcher-data.tar.gz -C /usr/share/indy
 	# mkdir -p /opt/indy/var/lib/indy/data/promote && \
@@ -38,7 +38,7 @@ RUN yum clean all && rm -rf /var/cache/yum /tmp/yum.log /tmp/RPM-GPG-KEY-CentOS-
     mv /tmp/byteman-download-4.0.14/lib/byteman.jar /opt/indy/lib/thirdparty && \
     rm -Rf /tmp/byteman.zip
 
-ADD lowOverhead.jfc /usr/share/indy/flightrecorder.jfc
+ADD lowOverhead.jfc /usr/share/indy/
 ADD SetStatement300SecondTimeout.btm /usr/share/indy/
 
 # NCL-4814: set umask to 002 so that group permission is 'rwx'
