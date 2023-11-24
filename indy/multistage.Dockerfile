@@ -1,15 +1,20 @@
 FROM quay.io/factory2/spmm-pipeline-base:latest AS builder
 
+ARG GIT_URL
+ARG GIT_REVISION
+ARG NPMREGISTRY
+
 RUN mkdir indy && \
     cd indy && \
     git init && \
-    git remote add origin $GIT_URL && \
-    git fetch --depth 1 origin $GIT_REVISION && \
+    git remote add origin ${GIT_URL} && \
+    git fetch --depth 1 origin ${GIT_REVISION} && \
     git checkout FETCH_HEAD
 
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk
 ENV JAVA_11_HOME /usr/lib/jvm/java-11-openjdk
 ENV SKIP_NPM_CONFIG false
+ENV NPMREGISTRY=${NPMREGISTRY}
 
 RUN cd indy && \
     mvn -B -V -gt toolchains.xml clean verify -DskipNpmConfig=false
