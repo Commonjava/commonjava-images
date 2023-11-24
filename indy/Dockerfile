@@ -11,10 +11,10 @@ ADD setup-user.sh /usr/local/bin/
 ADD setup-user.sh /etc/profile.d/
 ADD passwd.template /opt/
 
-ADD indy-launcher.tar.gz /tmp/
+COPY indy-launcher.tar.gz /tmp/
 RUN	tar -xf /tmp/indy-launcher.tar.gz -C /opt
 
-ADD indy-launcher-data.tar.gz /tmp/
+COPY indy-launcher-data.tar.gz /tmp/
 RUN	mkdir -p /usr/share/indy /home/indy && \
 	tar -xf /tmp/indy-launcher-data.tar.gz -C /usr/share/indy
 	# mkdir -p /opt/indy/var/lib/indy/data/promote && \
