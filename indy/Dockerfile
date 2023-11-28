@@ -13,10 +13,10 @@ ADD passwd.template /opt/
 ARG tarball_url
 ARG data_tarball_url
 
-COPY ${tarball_url} /tmp/indy-launcher.tar.gz
+ADD ${tarball_url} /tmp/indy-launcher.tar.gz
 RUN	tar -xf /tmp/indy-launcher.tar.gz -C /opt
 
-COPY ${data_tarball_url} /tmp/indy-launcher-data.tar.gz
+ADD ${data_tarball_url} /tmp/indy-launcher-data.tar.gz
 RUN	mkdir -p /usr/share/indy /home/indy && \
 	tar -xf /tmp/indy-launcher-data.tar.gz -C /usr/share/indy
 	# mkdir -p /opt/indy/var/lib/indy/data/promote && \
