@@ -40,7 +40,7 @@ RUN yum clean all && rm -rf /var/cache/yum /tmp/yum.log /tmp/RPM-GPG-KEY-CentOS-
     mv /tmp/byteman-download-4.0.14/lib/byteman.jar /opt/indy/lib/thirdparty && \
     rm -Rf /tmp/byteman.zip
 
-ADD lowOverhead.jfc /usr/share/indy/
+ADD lowOverhead.jfc /usr/share/indy/flightrecorder.jfc
 ADD SetStatement300SecondTimeout.btm /usr/share/indy/
 
 # NCL-4814: set umask to 002 so that group permission is 'rwx'
