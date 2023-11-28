@@ -1,6 +1,6 @@
 FROM quay.io/factory2/nos-java-base:latest
 
-#ARG tarball_url=https://some.host/some/path/to/reptoro.jar
+ARG jar_ur
 
 ENV JAVA_APP_DIR=/deployments
 ENV JAVA_OPTIONS -Dvertx.cacheDirBase=/tmp \
@@ -15,6 +15,6 @@ USER root
 
 RUN mkdir -p /deployment/resources
 
-COPY app.jar /deployment
+COPY ${jar_url} /deployment/app.jar
 
 USER 1001
