@@ -15,6 +15,6 @@ USER root
 
 RUN mkdir -p /deployment/resources
 
-COPY ${jar_url} /deployment/app.jar
+ADD ${jar_url} /deployment/app.jar
 
 USER 1001
