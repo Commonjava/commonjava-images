@@ -10,13 +10,11 @@ ADD start-indy.py /usr/local/bin/
 ADD setup-user.sh /usr/local/bin/
 ADD setup-user.sh /etc/profile.d/
 ADD passwd.template /opt/
-ARG tarball_url
-ARG data_tarball_url
 
-ADD ${tarball_url} /tmp/indy-launcher.tar.gz
+COPY indy-launcher.tar.gz /tmp/indy-launcher.tar.gz
 RUN	tar -xf /tmp/indy-launcher.tar.gz -C /opt
 
-ADD ${data_tarball_url} /tmp/indy-launcher-data.tar.gz
+COPY indy-launcher-data.tar.gz /tmp/indy-launcher-data.tar.gz
 RUN	mkdir -p /usr/share/indy /home/indy && \
 	tar -xf /tmp/indy-launcher-data.tar.gz -C /usr/share/indy
 	# mkdir -p /opt/indy/var/lib/indy/data/promote && \
