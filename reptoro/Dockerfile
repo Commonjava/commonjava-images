@@ -1,6 +1,6 @@
 FROM quay.io/factory2/nos-java-base:latest
 
-ARG jar_ur
+ARG jar_url
 
 ENV JAVA_APP_DIR=/deployments
 ENV JAVA_OPTIONS -Dvertx.cacheDirBase=/tmp \
