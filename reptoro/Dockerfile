@@ -1,7 +1,5 @@
 FROM quay.io/factory2/nos-java-base:latest
 
-ARG jar_url
-
 ENV JAVA_APP_DIR=/deployments
 ENV JAVA_OPTIONS -Dvertx.cacheDirBase=/tmp \
 	-Dvertx.disableDnsResolver=true \
@@ -15,6 +13,8 @@ USER root
 
 RUN mkdir -p /deployment/resources
 
-ADD ${jar_url} /deployment/app.jar
+RUN mkdir -p /deployment/resources && \
+	echo "Pulling jar from: $jar_url" && \
+	curl -SsLo /deployment/app.jar $jar_url
 
 USER 1001
