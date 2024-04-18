@@ -1,20 +1,3 @@
-FROM quay.io/factory2/spmm-pipeline-base:latest AS builder
-
-ARG GIT_URL
-ARG GIT_REVISION
-ENV GIT_URL ${GIT_URL}
-ENV GIT_REVISION ${GIT_REVISION}
-
-RUN mkdir repo && \
-    cd repo && \
-    git init && \
-    git remote add origin $GIT_URL && \
-    git fetch --depth 1 origin $GIT_REVISION && \
-    git checkout FETCH_HEAD
-
-RUN cd repo && \
-    mvn package -Dquarkus.package.type=uber-jar
-
 FROM quay.io/factory2/nos-java-base:jdk11
 
 EXPOSE 8080
@@ -29,7 +12,7 @@ RUN mkdir -p /opt/indy-archive-service/log && \
   chmod -R 777 /opt/indy-archive-service && \
   chmod -R 777 /opt/indy-archive-service/log
 
-COPY --from=builder /repo/target/*-runner.jar /opt/indy-archive-service/indy-archive-service-runner.jar
+ADD indy-archive-service-runner.jar /opt/indy-archive-service/indy-archive-service-runner.jar
 RUN chmod +r /opt/indy-archive-service/indy-archive-service-runner.jar
 
 # Run as non-root user
