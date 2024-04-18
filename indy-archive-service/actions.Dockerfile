@@ -29,7 +29,6 @@ RUN mkdir -p /opt/indy-archive-service/log && \
   chmod -R 777 /opt/indy-archive-service && \
   chmod -R 777 /opt/indy-archive-service/log
 
-RUN echo "Pulling jar from: $tarball_url"
 COPY --from=builder /repo/target/*-runner.jar /opt/indy-archive-service/indy-archive-service-runner.jar
 RUN chmod +r /opt/indy-archive-service/indy-archive-service-runner.jar
 
