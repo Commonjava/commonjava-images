@@ -10,7 +10,7 @@ if [ -d /deployment/scripts ]; then
     done
 fi
 
-JAVA=$(which java)
+JAVA=/usr/bin/java
 $JAVA -version 2>&1 > /dev/null
 if [ $? != 0 ]; then
   PATH=${JAVA_HOME}/bin:${PATH}

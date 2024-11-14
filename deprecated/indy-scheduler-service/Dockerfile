@@ -35,5 +35,5 @@ ENV LOGNAME=indy
 ENV USER=indy
 ENV HOME=/home/indy
 
-ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
-CMD ["bash", "-c", "/usr/local/bin/start-service.sh"]
+ENTRYPOINT ["bash", "-c"]
+CMD ["/usr/local/bin/start-service.sh"]

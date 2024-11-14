@@ -1,4 +1,4 @@
-FROM quay.io/factory2/nos-java-base:jdk11
+FROM quay.io/factory2/nos-java-base:latest
 
 EXPOSE 8080
 
@@ -19,4 +19,5 @@ RUN chmod +x /deployment/*
 
 USER 1001
 
-ENTRYPOINT ["/usr/local/bin/dumb-init", "/deployment/start-service.sh"]
+ENTRYPOINT ["bash", "-c"]
+CMD ["/deployment/start-service.sh"]
