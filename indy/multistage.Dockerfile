@@ -17,46 +17,32 @@ RUN cd indy && \
 
 FROM quay.io/factory2/nos-java-base:latest
 
-ENV INDY_ETC_DIR /usr/share/indy/etc
-
-EXPOSE 8080 8081 8000
-
 USER root
 
-ADD start-indy.py /usr/local/bin/start-indy.py
-ADD setup-user.sh /usr/local/bin/setup-user.sh
-ADD setup-user.sh /etc/profile.d/setup-user.sh
-ADD passwd.template /opt/passwd.template
-
 COPY --from=builder /indy/deployments/launcher/target/*-skinny.tar.gz /tmp/indy-launcher.tar.gz
-RUN	tar -xf /tmp/indy-launcher.tar.gz -C /opt
-
 COPY --from=builder /indy/deployments/launcher/target/*-data.tar.gz /tmp/indy-launcher-data.tar.gz
 RUN	mkdir -p /usr/share/indy /home/indy && \
+    mkdir -p /etc/indy && \
+    mkdir -p /var/log/indy && \
+    mkdir -p /usr/share/indy /opt/indy/var/log/indy && \
+    tar -xf /tmp/indy-launcher.tar.gz -C /opt && \
 	tar -xf /tmp/indy-launcher-data.tar.gz -C /usr/share/indy
-	# mkdir -p /opt/indy/var/lib/indy/data/promote && \
-	# cp -rf /usr/share/indy/data/promote/rules /opt/indy/var/lib/indy/data/promote/rules
 
-RUN chmod +x /usr/local/bin/*
-
-# Openshift and dynamic user id. https://access.redhat.com/articles/4859371 integration
-# enabled by configuring Bourne shell user profile to call setup-user.sh script.
-ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
-CMD ["bash", "-c", "source /usr/local/bin/setup-user.sh && /usr/local/bin/start-indy.py"]
-
-RUN mkdir -p /etc/indy && mkdir -p /var/log/indy && mkdir -p /usr/share/indy /opt/indy/var/log/indy
-RUN chmod -R 777 /etc/indy && chmod -R 777 /var/log/indy && chmod -R 777 /usr/share/indy
-RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
-    yum install -y java-11-openjdk-devel.x86_64 gettext unzip
-RUN cp -rf /opt/indy/var/lib/indy/ui /usr/share/indy/ui
-RUN yum clean all && rm -rf /var/cache/yum /tmp/yum.log /tmp/RPM-GPG-KEY-CentOS-7 && \
-    wget --quiet -O /tmp/byteman.zip https://downloads.jboss.org/byteman/4.0.14/byteman-download-4.0.14-bin.zip && \
-    unzip -d /tmp/ /tmp/byteman.zip **/byteman.jar && \
-    mv /tmp/byteman-download-4.0.14/lib/byteman.jar /opt/indy/lib/thirdparty && \
-    rm -Rf /tmp/byteman.zip
-
+ADD start-indy.py /usr/local/bin/start-indy.py
+ADD https://downloads.jboss.org/byteman/4.0.23/byteman-download-4.0.23-bin.zip /tmp/byteman.zip
 ADD lowOverhead.jfc /usr/share/indy/flightrecorder.jfc
 ADD SetStatement300SecondTimeout.btm /usr/share/indy/
+
+RUN chmod +x /usr/local/bin/* && \
+    chmod -R 777 /etc/indy && \
+    chmod -R 777 /var/log/indy && \
+    chmod -R 777 /usr/share/indy
+
+RUN cp -rf /opt/indy/var/lib/indy/ui /usr/share/indy/ui
+RUN dnf install -y gettext unzip && \
+    unzip -d /tmp/ /tmp/byteman.zip **/byteman.jar && \
+    mv /tmp/byteman-download-4.0.23/lib/byteman.jar /opt/indy/lib/thirdparty && \
+    rm -rf /var/cache/yum
 
 # NCL-4814: set umask to 002 so that group permission is 'rwx'
 # It works because in start-indy.py we invoke indy.sh with bash -l (login shell)
@@ -74,11 +60,16 @@ RUN chgrp -R 0 /opt && \
     chmod -R g=u /usr/share/indy && \
     chgrp -R 0 /home/indy && \
     chmod -R g=u /home/indy && \
-    chown -R 1001:0 /home/indy && \
-    chmod 644 /etc/profile.d/setup-user.sh
+    chown -R 1001:0 /home/indy
+
+EXPOSE 8080 8081 8000
 
 USER 1001
 
 ENV LOGNAME=indy
 ENV USER=indy
 ENV HOME=/home/indy
+ENV INDY_ETC_DIR /usr/share/indy/etc
+
+ENTRYPOINT ["bash", "-c"]
+CMD ["/usr/local/bin/start-indy.py"]

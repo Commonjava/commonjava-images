@@ -1,4 +1,4 @@
-FROM quay.io/factory2/nos-java-base:jdk11
+FROM quay.io/factory2/nos-java-base:latest
 
 EXPOSE 8080
 
@@ -24,5 +24,5 @@ RUN chgrp -R 0 /opt && \
 
 USER 1001
 
-ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
-CMD ["bash", "-c", "/usr/local/bin/start-service.sh"]
+ENTRYPOINT ["bash", "-c"]
+CMD ["/usr/local/bin/start-service.sh"]

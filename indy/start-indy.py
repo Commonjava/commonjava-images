@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (C) 2015 John Casey (jdcasey@commonjava.org)
 #
@@ -22,26 +22,26 @@ import shutil
 import signal
 import subprocess
 import sys
-from urllib2 import urlopen
+from urllib.request import urlopen
 
 def handle_shutdown(signum, frame):
-  print "SIGTERM: Stopping Indy."
+  print("SIGTERM: Stopping Indy.")
   process.send_signal(signal.SIGTERM)
 
 def handle_output(process):
   try:
     for c in iter(lambda: process.stdout.read(1), ''):
-      sys.stdout.write(c)
+      sys.stdout.write(c.decode('utf-8'))
   except KeyboardInterrupt:
-    print ""
+    print("")
     return
 
 def run(cmd, fail_message='Error running command', fail=True):
   cmd += " 2>&1"
-  print cmd
+  print(cmd)
   ret = os.system(cmd)
   if fail is True and ret != 0:
-    print "%s (failed with code: %s)" % (fail_message, ret)
+    print("%s (failed with code: %s)" % (fail_message, ret))
     sys.exit(ret)
 
 
@@ -51,11 +51,11 @@ def runIn(cmd, workdir, fail_message='Error running command', fail=True):
   olddir = os.getcwd()
   os.chdir(workdir)
 
-  print "In: %s, executing: %s" % (workdir, cmd)
+  print("In: %s, executing: %s" % (workdir, cmd))
 
   ret = os.system(cmd)
   if fail is True and ret != 0:
-    print "%s (failed with code: %s)" % (fail_message, ret)
+    print("%s (failed with code: %s)" % (fail_message, ret))
     sys.exit(ret)
 
   os.chdir(olddir)
@@ -66,10 +66,10 @@ def copy_over(src, target):
     return
   
   if os.path.exists(target):
-    print "rm -r %s" % target
+    print("rm -r %s" % target)
     shutil.rmtree(target)
 
-  print "cp -r %s %s" % (src, target)
+  print("cp -r %s %s" % (src, target))
   shutil.copytree(src, target)
 
 def copy_missed(src, target):
@@ -82,49 +82,49 @@ def copy_missed(src, target):
       dst_file = os.path.join(dst_dir, file_)
       if os.path.exists(dst_file):
         continue       
-      print "Copy new file: %s" % src_file
+      print("Copy new file: %s" % src_file)
       shutil.copyfile(src_file, dst_file) 
 
 def move_and_link(src, target, replaceIfExists=False):
   srcParent = os.path.dirname(src)
   if not os.path.isdir(srcParent):
-    print "mkdir -p %s" % srcParent
+    print("mkdir -p %s" % srcParent)
     os.makedirs(srcParent)
 
   if not os.path.isdir(target):
-    print "mkdir -p %s" % target
+    print("mkdir -p %s" % target)
     os.makedirs(target)
 
   if os.path.isdir(src):
     for f in os.listdir(src):
       targetFile = os.path.join(target, f)
       srcFile = os.path.join(src, f)
-      print "%s => %s" % (srcFile, targetFile)
+      print("%s => %s" % (srcFile, targetFile))
       if os.path.exists(targetFile):
         if not replaceIfExists:
-          print "Target dir exists: %s. NOT replacing." % targetFile
+          print("Target dir exists: %s. NOT replacing." % targetFile)
           continue
         else:
-          print "Target dir exists: %s. Replacing." % targetFile
+          print("Target dir exists: %s. Replacing." % targetFile)
 
         if os.path.isdir(targetFile):
-          print "rm -r %s" % targetFile
+          print("rm -r %s" % targetFile)
           shutil.rmtree(targetFile)
         else:
-          print "rm %s" % targetFile
+          print("rm %s" % targetFile)
           os.remove(targetFile)
 
       if os.path.isdir(srcFile):
-        print "cp -r %s %s" % (srcFile, targetFile)
+        print("cp -r %s %s" % (srcFile, targetFile))
         shutil.copytree(srcFile, targetFile)
       else:
-        print "cp %s %s" % (srcFile, targetFile)
+        print("cp %s %s" % (srcFile, targetFile))
         shutil.copy(srcFile, targetFile)
 
-    print "rm -r %s" % src
+    print("rm -r %s" % src)
     shutil.rmtree(src)
 
-  print "ln -s %s %s" % (target, src)
+  print("ln -s %s %s" % (target, src))
   os.symlink(target, src)
 
 
@@ -161,30 +161,30 @@ BACKUP_PROMOTE = '/tmp/indy/promote'
 
 # command-line options for indy
 opts = os.environ.get(INDY_OPTS_ENVAR) or ''
-print "Read indy cli opts: %s" % opts
+print("Read indy cli opts: %s" % opts)
 
 if os.path.isdir(SSH_CONFIG_VOL) and len(os.listdir(SSH_CONFIG_VOL)) > 0:
-  print "Importing SSH configurations from volume: %s" % SSH_CONFIG_VOL
+  print("Importing SSH configurations from volume: %s" % SSH_CONFIG_VOL)
   run("cp -vrf %s /root/.ssh" % SSH_CONFIG_VOL)
   run("chmod -v 700 /root/.ssh", fail=False)
   run("chmod -v 600 /root/.ssh/*", fail=False)
 
 if os.path.isdir(INDY_DIR) is False:
-  print "Cannot start, %s does not exist!" % INDY_DIR
+  print("Cannot start, %s does not exist!" % INDY_DIR)
   exit(1)
 
 #if indyEtcDir is not None:
 #  if os.path.isdir(INDY_ETC):
-#    print "Clearing pre-existing Indy etc directory"
+#    print("Clearing pre-existing Indy etc directory"
 #    shutil.rmtree(INDY_ETC)
 #  run("mv %s %s" % (indyEtcDir, INDY_ETC), "Failed to move %s to %s" % (indyEtcDir, INDY_ETC))
   
 # backup indy default promote scripts
 if os.path.isdir(INDY_DATA_PROMOTE):
   if os.path.isdir(BACKUP_PROMOTE):
-    print 'Remove old promote backup %s' % BACKUP_PROMOTE
+    print('Remove old promote backup %s' % BACKUP_PROMOTE)
     shutil.rmtree(BACKUP_PROMOTE)
-  print 'Backup new promote %s' % BACKUP_PROMOTE
+  print('Backup new promote %s' % BACKUP_PROMOTE)
   shutil.copytree(INDY_DATA_PROMOTE, BACKUP_PROMOTE)
 
 # move_and_link(INDY_ETC, ETC_INDY, replaceIfExists=True)
@@ -208,7 +208,7 @@ copy_over("/opt/indy/etc/indy/lifecycle", os.path.join(INDY_DATA, "lifecycle"))
 cmd_parts = ["/bin/bash", os.path.join(INDY_DIR, 'bin', 'indy.sh')]
 cmd_parts += shlex.split(opts)
 
-print "Command parts: %s" % cmd_parts
+print("Command parts: %s" % cmd_parts)
 process = subprocess.Popen(cmd_parts, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
 signal.signal(signal.SIGTERM, handle_shutdown)
