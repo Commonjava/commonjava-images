@@ -5,8 +5,7 @@ EXPOSE 8080
 
 USER root
 
-ADD nos-java-base/RH-IT-Root-CA.crt /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
-ADD nos-java-base/2022-IT-Root-CA.pem /etc/pki/ca-trust/source/anchors/2022-IT-Root-CA.pem
+ADD 2022-IT-Root-CA.pem /etc/pki/ca-trust/source/anchors/2022-IT-Root-CA.pem
 RUN update-ca-trust extract
 
 COPY start-service.sh /usr/local/bin/start-service.sh
