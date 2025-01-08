@@ -15,7 +15,7 @@ RUN cd indy && \
     mvn -B -V -gt toolchains.xml clean verify -DskipNpmConfig=false
 
 
-FROM quay.io/factory2/nos-java-base:latest
+FROM quay.io/factory2/nos-java-base:ubi9
 
 USER root
 
