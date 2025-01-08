@@ -1,4 +1,4 @@
-FROM quay.io/factory2/nos-java-base:latest
+FROM quay.io/factory2/nos-java-base:ubi9
 
 ENV JAVA_APP_DIR=/deployments
 ENV JAVA_OPTIONS -Dvertx.cacheDirBase=/tmp \

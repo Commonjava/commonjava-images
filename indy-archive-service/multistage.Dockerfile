@@ -10,7 +10,7 @@ RUN mkdir repo && \
 RUN cd repo && \
     mvn package -Dquarkus.package.type=uber-jar
 
-FROM quay.io/factory2/nos-java-base:latest
+FROM quay.io/factory2/nos-java-base:ubi9
 
 EXPOSE 8080
 
