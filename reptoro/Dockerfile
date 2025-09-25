@@ -15,6 +15,6 @@ RUN mkdir -p /deployment/resources
 
 RUN mkdir -p /deployment/resources && \
 	echo "Pulling jar from: $jar_url" && \
-	curl -SsLo /deployment/app.jar $jar_url
+	curl -SsLo /deployment/app.jar "$jar_url"
 
 USER 1001

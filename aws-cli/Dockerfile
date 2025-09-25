@@ -1,9 +1,9 @@
 FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 
-LABEL Component="nos-aws-cli" \
-    Name="nos-aws-cli" \
-    Version="1" \
-    Release="1" \
+LABEL component="nos-aws-cli" \
+    name="nos-aws-cli" \
+    version="1" \
+    release="1" \
     maintainer="RedHat SPMM Team <nos-devel@redhat.com>"
 
 ARG USER=aws
@@ -13,7 +13,7 @@ ARG HOME_DIR=/home/${USER}
 USER root
 ENV TZ UTC
 
-ADD 2022-IT-Root-CA.pem /etc/pki/ca-trust/source/anchors/2022-IT-Root-CA.pem
+COPY 2022-IT-Root-CA.pem /etc/pki/ca-trust/source/anchors/2022-IT-Root-CA.pem
 RUN update-ca-trust extract
 
 RUN microdnf -y update && \
@@ -21,11 +21,12 @@ RUN microdnf -y update && \
     microdnf clean all && \
     rm -rf /var/cache/yum
 
-RUN useradd -d ${HOME_DIR} -u ${UID} -g 0 -m -s /bin/bash ${USER} \
+RUN useradd -l -d ${HOME_DIR} -u ${UID} -g 0 -m -s /bin/bash ${USER} \
     && chown ${USER}:0 ${HOME_DIR} \
     && chmod -R g+rwx ${HOME_DIR} \
     && chmod g+rw /etc/passwd
 
+# hadolint ignore=DL3020
 ADD https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip /tmp/aws/awscliv2.zip
 RUN unzip /tmp/aws/awscliv2.zip -d /tmp/aws
 RUN rm /tmp/aws/awscliv2.zip \

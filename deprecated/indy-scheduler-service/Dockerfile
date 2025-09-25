@@ -4,17 +4,18 @@ EXPOSE 8080
 
 USER root
 
-ADD start-service.sh /usr/local/bin/start-service.sh
+COPY start-service.sh /usr/local/bin/start-service.sh
 
 RUN chmod +x /usr/local/bin/*
 
-RUN yum -y install java-11-openjdk-devel
+RUN yum -y install java-11-openjdk-devel && yum clean all
 
 RUN mkdir -p /opt/indy-scheduler-service/log /home/indy && \
   chmod -R 777 /opt/indy-scheduler-service && \
   chmod -R 777 /opt/indy-scheduler-service/log
 
 RUN echo "Pulling jar from: $tarball_url"
+# hadolint ignore=DL3020
 ADD $tarball_url /opt/indy-scheduler-service/indy-scheduler-service-runner.jar
 RUN chmod +r /opt/indy-scheduler-service/indy-scheduler-service-runner.jar
 

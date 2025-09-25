@@ -3,8 +3,8 @@ FROM quay.io/factory2/spmm-pipeline-base:latest AS builder
 RUN mkdir repo && \
     cd repo && \
     git init && \
-    git remote add origin $GIT_URL && \
-    git fetch --depth 1 origin $GIT_REVISION && \
+    git remote add origin "$GIT_URL" && \
+    git fetch --depth 1 origin "$GIT_REVISION" && \
     git checkout FETCH_HEAD
 
 RUN cd repo && \
@@ -17,15 +17,15 @@ EXPOSE 8080
 
 USER root
 
-ADD start-service.sh /usr/local/bin/start-service.sh
+COPY start-service.sh /usr/local/bin/start-service.sh
 
 RUN chmod +x /usr/local/bin/*
 
 RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
-    wget -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7 && \
+    wget -q -P /tmp http://mirror.centos.org/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7 && \
     rpm --import /tmp/RPM-GPG-KEY-CentOS-7 && \
     yum-config-manager --add-repo http://mirror.centos.org/centos/7/os/x86_64/ && \
-    yum install -y java-11-openjdk-devel.x86_64 gettext unzip
+    yum install -y java-11-openjdk-devel.x86_64 gettext unzip && yum clean all
 
 RUN mkdir -p /opt/pathmap-storage-service/log /home/indy && \
   chmod -R 777 /opt/pathmap-storage-service && \
