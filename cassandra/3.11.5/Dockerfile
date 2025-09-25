@@ -1,4 +1,5 @@
 # vim:set ft=dockerfile:
+# hadolint ignore=DL3026
 FROM debian:stretch-slim
 
 # explicitly set user/group IDs
@@ -23,13 +24,14 @@ RUN set -eux; \
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.10
+# hadolint ignore=SC2155
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends ca-certificates wget; \
 	rm -rf /var/lib/apt/lists/*; \
-	wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)"; \
-	wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc"; \
+	wget -q -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)"; \
+	wget -q -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
 	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
@@ -37,7 +39,7 @@ RUN set -eux; \
 	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	chmod +x /usr/local/bin/gosu; \
 	apt-mark auto '.*' > /dev/null; \
-	apt-mark manual $savedAptMark > /dev/null; \
+	apt-mark manual "$savedAptMark" > /dev/null; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	gosu nobody true
 
@@ -48,6 +50,7 @@ ENV GPG_KEYS \
 	514A2AD631A57A16DD0047EC749D6EEC0353B12C \
 # gpg: key FE4B2BDA: public key "Michael Shuler <michael@pbandjelly.org>" imported
 	A26E528B271F19B9E5D8E19EA278B781FE4B2BDA
+# hadolint ignore=SC2015
 RUN set -eux; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	for key in $GPG_KEYS; do \
@@ -60,6 +63,7 @@ RUN set -eux; \
 
 ENV CASSANDRA_VERSION 3.11.5
 
+# hadolint ignore=DL3015
 RUN set -eux; \
 	\
 # https://bugs.debian.org/877677
@@ -91,13 +95,13 @@ RUN set -eux; \
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
 # (which is done after we install the built packages so we don't have to redownload any overlapping dependencies)
 			apt-mark showmanual | xargs apt-mark auto > /dev/null; \
-			apt-mark manual $savedAptMark; \
+			apt-mark manual "$savedAptMark"; \
 			\
 # download the two "arch: all" packages we need
 			tempDir="$(mktemp -d)"; \
 			for pkg in cassandra cassandra-tools; do \
 				deb="${pkg}_${CASSANDRA_VERSION}_all.deb"; \
-				wget -O "$tempDir/$deb" "https://www.apache.org/dist/cassandra/debian/pool/main/c/cassandra/$deb"; \
+				wget -q -O "$tempDir/$deb" "https://www.apache.org/dist/cassandra/debian/pool/main/c/cassandra/$deb"; \
 			done; \
 			\
 # create a temporary local APT repo to install from (so that dependency resolution can be handled by APT, as it should be)

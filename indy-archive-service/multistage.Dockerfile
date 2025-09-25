@@ -3,8 +3,8 @@ FROM quay.io/factory2/spmm-pipeline-base:latest AS builder
 RUN mkdir repo && \
     cd repo && \
     git init && \
-    git remote add origin $GIT_URL && \
-    git fetch --depth 1 origin $GIT_REVISION && \
+    git remote add origin "$GIT_URL" && \
+    git fetch --depth 1 origin "$GIT_REVISION" && \
     git checkout FETCH_HEAD
 
 RUN cd repo && \
@@ -16,7 +16,7 @@ EXPOSE 8080
 
 USER root
 
-ADD start-service.sh /usr/local/bin/start-service.sh
+COPY start-service.sh /usr/local/bin/start-service.sh
 
 RUN chmod +x /usr/local/bin/*
 

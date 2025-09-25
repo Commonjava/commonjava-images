@@ -4,7 +4,7 @@ EXPOSE 8080
 
 USER root
 
-ADD start-service.sh /usr/local/bin/start-service.sh
+COPY start-service.sh /usr/local/bin/start-service.sh
 
 RUN chmod +x /usr/local/bin/*
 
@@ -12,7 +12,7 @@ RUN mkdir -p /deployment/log && \
   chmod -R 777 /deployment && \
   chmod -R 777 /deployment/log
 
-ADD indy-metadata-service-runner.jar /deployment/indy-metadata-service-runner.jar
+COPY indy-metadata-service-runner.jar /deployment/indy-metadata-service-runner.jar
 RUN chmod +r /deployment/indy-metadata-service-runner.jar
 
 # Run as non-root user

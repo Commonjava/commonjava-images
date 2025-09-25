@@ -6,20 +6,21 @@ FROM registry.access.redhat.com/ubi7:7.9
 
 LABEL io.openshift.sti.scripts-url="image:///usr/local/sti" \
     io.openshift.s2i.scripts-url="image:///usr/local/sti" \
-    Component="nos-sti-base" \
-    Name="nos-java-base" \
-    Version="8" \
-    Release="1" \
+    component="nos-sti-base" \
+    name="nos-java-base" \
+    version="8" \
+    release="1" \
     maintainer="RedHat SPMM Team <nos-devel@redhat.com>"
 
 USER root
 
 ENV TZ UTC
 
-ADD RH-IT-Root-CA.crt /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
-ADD 2022-IT-Root-CA.pem /etc/pki/ca-trust/source/anchors/2022-IT-Root-CA.pem
+COPY RH-IT-Root-CA.crt /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
+COPY 2022-IT-Root-CA.pem /etc/pki/ca-trust/source/anchors/2022-IT-Root-CA.pem
 RUN update-ca-trust extract
 
+# hadolint ignore=DL3020
 ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64 /usr/local/bin/dumb-init
 
 RUN yum -y update && \
@@ -27,7 +28,7 @@ RUN yum -y update && \
     yum clean all && \
     rm -rf /var/cache/yum
 
-ADD start.sh /usr/local/bin/start.sh
+COPY start.sh /usr/local/bin/start.sh
 
 RUN chmod +x /usr/local/bin/*
 

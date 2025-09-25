@@ -1,0 +1,29 @@
+override:
+  info:
+    # Allow COPY --from without specific user
+    - DL3020
+
+ignored:
+  # Allow not specify version with `dnf install -y <package>-<version>`.
+  - DL3041
+  # Allow not specify version with `yum install -y <package>-<version>`.
+  - DL3033
+  # Allow not specify version with `apt-get install <package>`.
+  - DL3008
+  # Allow curl without --silent flag and pipefail issues for legacy builds
+  - DL4006
+  # Allow cd instead of WORKDIR in complex installation scripts
+  - DL3003
+  # Allow use of latest tag for base images in development
+  - DL3007
+  # Allow not pin versions in pip
+  - DL3013
+  # Allow multiple consecutive `RUN` instructions
+  - DL3059
+  # Allow use not assigned variables because they will be assigned through cli
+  - SC2154
+
+trustedRegistries:
+  - quay.io
+  - registry.redhat.io
+  - registry.access.redhat.com

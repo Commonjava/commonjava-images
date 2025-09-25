@@ -3,8 +3,8 @@ FROM quay.io/factory2/spmm-pipeline-base:latest AS builder
 RUN mkdir indy && \
     cd indy && \
     git init && \
-    git remote add origin $GIT_URL && \
-    git fetch --depth 1 origin $GIT_REVISION && \
+    git remote add origin "$GIT_URL" && \
+    git fetch --depth 1 origin "$GIT_REVISION" && \
     git checkout FETCH_HEAD
 
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk
@@ -23,10 +23,10 @@ EXPOSE 8080 8081 8000
 
 USER root
 
-ADD start-indy.py /usr/local/bin/start-indy.py
-ADD setup-user.sh /usr/local/bin/setup-user.sh
-ADD setup-user.sh /etc/profile.d/setup-user.sh
-ADD passwd.template /opt/passwd.template
+COPY start-indy.py /usr/local/bin/start-indy.py
+COPY setup-user.sh /usr/local/bin/setup-user.sh
+COPY setup-user.sh /etc/profile.d/setup-user.sh
+COPY passwd.template /opt/passwd.template
 
 COPY --from=builder /indy/deployments/launcher/target/*-skinny.tar.gz /tmp/indy-launcher.tar.gz
 RUN	tar -xf /tmp/indy-launcher.tar.gz -C /opt
@@ -47,16 +47,17 @@ CMD ["bash", "-c", "source /usr/local/bin/setup-user.sh && /usr/local/bin/start-
 RUN mkdir -p /etc/indy && mkdir -p /var/log/indy && mkdir -p /usr/share/indy /opt/indy/var/log/indy
 RUN chmod -R 777 /etc/indy && chmod -R 777 /var/log/indy && chmod -R 777 /usr/share/indy
 RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
-    yum install -y java-11-openjdk-devel.x86_64 gettext unzip
+    yum install -y java-11-openjdk-devel.x86_64 gettext unzip && yum clean all
 RUN cp -rf /opt/indy/var/lib/indy/ui /usr/share/indy/ui
+# hadolint ignore=SC2035
 RUN yum clean all && rm -rf /var/cache/yum /tmp/yum.log /tmp/RPM-GPG-KEY-CentOS-7 && \
     wget --quiet -O /tmp/byteman.zip https://downloads.jboss.org/byteman/4.0.14/byteman-download-4.0.14-bin.zip && \
     unzip -d /tmp/ /tmp/byteman.zip **/byteman.jar && \
     mv /tmp/byteman-download-4.0.14/lib/byteman.jar /opt/indy/lib/thirdparty && \
     rm -Rf /tmp/byteman.zip
 
-ADD lowOverhead.jfc /usr/share/indy/flightrecorder.jfc
-ADD SetStatement300SecondTimeout.btm /usr/share/indy/
+COPY lowOverhead.jfc /usr/share/indy/flightrecorder.jfc
+COPY SetStatement300SecondTimeout.btm /usr/share/indy/
 
 # NCL-4814: set umask to 002 so that group permission is 'rwx'
 # It works because in start-indy.py we invoke indy.sh with bash -l (login shell)
