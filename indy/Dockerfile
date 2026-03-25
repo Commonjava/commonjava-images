@@ -34,11 +34,7 @@ RUN chmod -R 777 /etc/indy && chmod -R 777 /var/log/indy && chmod -R 777 /usr/sh
 RUN yum remove -y java-1.8.0-openjdk java-1.8.0-openjdk-headless && \
     yum install -y java-11-openjdk-devel.x86_64 gettext unzip nss_wrapper
 RUN cp -rf /opt/indy/var/lib/indy/ui /usr/share/indy/ui
-RUN yum clean all && rm -rf /var/cache/yum /tmp/yum.log /tmp/RPM-GPG-KEY-CentOS-7 && \
-    wget --quiet -O /tmp/byteman.zip https://downloads.jboss.org/byteman/4.0.14/byteman-download-4.0.14-bin.zip && \
-    unzip -d /tmp/ /tmp/byteman.zip **/byteman.jar && \
-    mv /tmp/byteman-download-4.0.14/lib/byteman.jar /opt/indy/lib/thirdparty && \
-    rm -Rf /tmp/byteman.zip
+RUN yum clean all && rm -rf /var/cache/yum /tmp/yum.log /tmp/RPM-GPG-KEY-CentOS-7
 
 ADD lowOverhead.jfc /usr/share/indy/flightrecorder.jfc
 ADD SetStatement300SecondTimeout.btm /usr/share/indy/
